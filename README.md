@@ -2,4 +2,4 @@
 Gangs builder for FiveM
 
 
-En cour de développement ! 
+En cours de développement ! 
