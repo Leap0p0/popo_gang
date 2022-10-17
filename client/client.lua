@@ -117,7 +117,8 @@ local function openMenu()
                 RageUI.Button(_U('create') , _U('create'), {RightLabel = "~g~>>>"}, true,function(h,a,s)
                     if (s) then
                         if second_place == "~b~✅" and first_place == "~b~✅" and builder.gang_name and builder.label_name then
-                            TriggerServerEvent('popo_gang:register_tp_point', builder)
+                            TriggerServerEvent('popo_gang:register_gang', builder)
+                            TriggerServerEvent('popo_gang:register_Inventory_account', builder)
                             ESX.ShowNotification(_U('good_create')..builder.gang_name.._U('good_create_bis'))
                             second_place = "~r~❌"
                             first_place = "~r~❌"
