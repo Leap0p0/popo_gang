@@ -1,0 +1,56 @@
+➤ EN
+
+To add a language you must:
+
+- Create a ".lua" file with the desired language (ex: "es.lua" for Spanish)
+
+- For this script, it will be necessary to add in the file:
+
+*****************************language.lua*****************************
+Locales['language (ex: es)'] = {
+
+    (Modify the rest in the desired language)
+    ⚠(WARNING ! Do NOT modify the content between square brackets)⚠
+
+
+    ['open'] = 'Press [~b~E~w~] to rent a vehicle.',
+    ['Location'] = 'Car rental',
+	['choose'] = 'Choose your rental vehicle:',
+    ['ready'] = '~g~The vehicle is ready.~z~ ~r~Be careful on the road!',
+    ['time'] = 'You have ~r~ ',
+    ['time_bis'] = '~r~ minutes~s~ left before returning the rental car!',
+    ['timetoend'] = '~r~ You return the rental car in ',
+    ['timetoend_bis'] = '~r~ minutes~s~!',
+}
+**********************************************************************
+
+- Add the file in the "fxmanifest.lua" file in the "client_scripts" and "server_scripts" table
+
+
+➤ FR
+
+Pour ajouter une langue il faut :
+
+- Créer un fichier en ".lua" avec la langue désiré (ex : "es.lua" pour l'espagnol)
+
+- Pour ce script, il faudra ajouter dans le fichier : 
+
+*****************************language.lua*****************************
+Locales['langue (ex: es)'] = {
+
+    (Modifier le reste dans le language voulu)
+    ⚠(ATTENTION ! Ne PAS modifier le contenue entre crochet)⚠
+
+
+    ['open'] = 'Appuyez sur [~b~E~w~] pour louer un véhicule.',
+    ['Location'] = 'Location',
+	['choose'] = 'Choisissez votre véhicule de location :',
+    ['ready'] = '~g~Véhicule de location prêt.~z~ ~r~Soit prudent sur la route !',
+    ['time'] = 'Il te reste ~r~ ',
+    ['time_bis'] = '~r~ minutes~s~ avant de rendre la voiture de location !',
+    ['timetoend'] = '~r~ Vous rendez la voiture de location dans ',
+    ['timetoend_bis'] = '~r~ minutes~s~ !',
+}
+**********************************************************************
+
+- Ajouter le fichier dans le fichier "fxmanifest.lua" dans la table "client_scripts" et "server_scripts"

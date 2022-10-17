@@ -1,0 +1,21 @@
+Locales['en'] = {
+
+    ['open'] = "Press [~b~E~w~] to take the elevator.",
+    ['name'] = 'Name :',
+    ['first_point'] = 'First Point :',
+	['second_point'] = 'Second Point :',
+    ['create'] = '~g~Create the teleport :',
+    ['delete'] = '~r~Delete',
+    ['first'] = "You have defined ~g~the first point ~z~!",
+    ['second'] = "You have defined ~g~the second point ~z~!",
+    ['no'] = "~r~You still have points to add",
+    ['no_bis'] = "~r~Enter a valid name!",
+    ['good_delete'] = "The point ",
+    ['good_delete_bis'] = " has been ~r~deleted (reboot)",
+    ['good_create'] = "The point ",
+    ['good_create_bis'] = " has been ~g~created~z~ successfully",
+    ['create_point'] = "Point creation",
+    ['delete_point'] = "Point deletion",
+    ['load'] = "We have ",
+    ['load_bis'] = " teleportation point(s) on the Map!",
+}
