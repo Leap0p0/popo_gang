@@ -1,8 +1,13 @@
 ESX = nil
 
+local gangpoint = {}
 local name = nil
 local label = nil
 local name_suppr = nil
+local name_petit = nil
+local name_moyen = nil
+local name_grand = nil
+local name_boss = nil
 local first_place = nil
 local second_place = nil
 local builder = {
@@ -17,8 +22,16 @@ RMenu.Add("popogang", "categorie", RageUI.CreateMenu("Souhaitez-vous", "~b~ Cré
 RMenu:Get("popogang", "categorie").Closed = function()
 end
 
+RMenu.Add("popogang", "stock", RageUI.CreateMenu("Souhaitez-vous", "~b~ Prendre / Déposer"))
+RMenu:Get("popogang", "stock").Closed = function()
+end
+
 RMenu.Add("popogang", "create", RageUI.CreateSubMenu(RMenu:Get("popogang", "categorie"), "lolo", nil))
 RMenu:Get("popogang", "create").Closed = function()
+end
+
+RMenu.Add("popogang", "grade", RageUI.CreateSubMenu(RMenu:Get("popogang", "create"), "test", nil))
+RMenu:Get("popogang", "grade").Closed = function()
 end
 
 RMenu.Add("popogang", "delete", RageUI.CreateSubMenu(RMenu:Get("popogang", "categorie"), "eded", nil))
@@ -43,6 +56,169 @@ local function KeyboardInput(entryTitle, textEntry, inputText, maxLength)
         Citizen.Wait(500)
 		blockinput = false
         return nil
+    end
+end
+
+local function OpenGetStocksMenu(society_name)
+ 
+	ESX.TriggerServerCallback('popogang:getStockItems', function(items, society_name)
+
+		print(json.encode(items))
+
+		local elements = {}
+
+		for i=1, #items, 1 do
+			if (items[i].count ~= 0) then
+				table.insert(elements, {label = 'x' .. items[i].count .. ' ' .. items[i].label, value = items[i].name})
+			end
+		end
+
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'stocks_menu', {
+				title    = 'Stock',
+				align    = 'top-left',
+				elements = elements
+			}, function(data, menu)
+
+				local itemName = data.current.value
+
+				ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'stocks_menu_get_item_count', {
+						title = _U('quantity')
+					}, function(data2, menu2)
+		
+						local count = tonumber(data2.value)
+
+						if count == nil or count <= 0 then
+							ESX.ShowNotification(_U('invalid_quantity'))
+						else
+							menu2.close()
+							menu.close()
+							OpenGetStocksMenu(society_name)
+
+							TriggerServerEvent('popogang:getStockItems', itemName, count, society_name)
+						end
+					end, function(data2, menu2)
+						menu2.close()
+					end)
+			end, function(data, menu)
+				menu.close()
+			end)
+	end)
+end
+
+local function OpenPutStocksMenu(society_name)
+
+	ESX.TriggerServerCallback('popogang:getPlayerInventory', function(inventory)
+
+		local elements = {}
+
+		for i=1, #inventory.items, 1 do
+
+			local item = inventory.items[i]
+
+			if item.count > 0 then
+				table.insert(elements, {label = item.label .. ' x' .. item.count, type = 'item_standard', value = item.name})
+			end
+		end
+
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'stocks_menu', {
+				title    = _U('inventory'),
+				elements = elements
+			}, function(data, menu)
+
+				local itemName = data.current.value
+
+				ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'stocks_menu_put_item_count', {
+						title = _U('quantity')
+					}, function(data2, menu2)
+
+						local count = tonumber(data2.value)
+
+						if count == nil or count <= 0 then
+							ESX.ShowNotification(_U('invalid_quantity'))
+						else
+							menu2.close()
+							menu.close()
+							OpenPutStocksMenu(society_name)
+
+							TriggerServerEvent('popogang:putStockItems', itemName, count)
+						end
+					end, function(data2, menu2)
+						menu2.close()
+					end)
+			end, function(data, menu)
+				menu.close()
+			end)
+	end)
+end
+
+
+--STOCK MENU RageUI--
+
+local function openStockMenu(society_name)
+	RageUI.Visible(RMenu:Get("popogang","stock"), true)
+	Citizen.CreateThread(function()
+		while true do
+			RageUI.IsVisible(RMenu:Get("popogang","stock"),true,true,true,function()
+				RageUI.Button(_U('get_stock'), _U('get_stock'), {RightLabel = "~g~>>>"}, true,function(h,a,s)
+                    if (s) then
+						RageUI.CloseAll()
+						OpenGetStocksMenu(society_name)
+                    end
+                end)
+				RageUI.Button(_U('put_stock'), _U('put_stock'), {RightLabel = "~g~>>>"}, true,function(h,a,s)
+                    if (s) then
+						RageUI.CloseAll()
+						OpenPutStocksMenu(society_name)
+                    end
+                end)
+			end, function()end)
+			Citizen.Wait(0)
+		end
+	end)
+end
+
+
+--Show marker--
+local function show_marker()
+    while true do
+        local interval = 500
+        local pos = GetEntityCoords(PlayerPedId())
+        for i, teleportpoints in pairs(gangpoint) do
+            local a = teleportpoints.first_coord
+            local b = teleportpoints.second_coord
+            local job = ESX.PlayerData.job2.name
+            local job_grade = ESX.PlayerData.job2.grade_name
+            
+            --POINT COFFRE--
+            local dist = #(pos - a)
+                if (dist <= 100) and job == teleportpoints.gang_name then
+                    interval = 0
+                    DrawMarker(25, a.x, a.y, (a.z - 0.98), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 255, 255, 255, false, true, 2, false, false, false, false)
+                    if (dist <= 1) then
+                        AddTextEntry("try", _U('open_stock'))
+                        DisplayHelpTextThisFrame("try", false)
+                        if (IsControlJustPressed(0, 51)) then
+                            local society_name = "society_"..teleportpoints.gang_name
+                            openStockMenu(society_name)
+                        end
+                    end
+                end
+    
+            --POINT BOSS--
+            dist = #(pos - b)
+                if (dist <= 100) and job == teleportpoints.gang_name and job_grade == 'boss' then
+                    interval = 0
+                    DrawMarker(25, b.x, b.y, (b.z - 0.98), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 255, 255, 255, false, true, 2, false, false, false, false)
+                    if (dist <= 1) then
+                        AddTextEntry("tryb", _U('open_boss'))
+                        DisplayHelpTextThisFrame("tryb", false)
+                        if (IsControlJustPressed(0, 51)) then
+                            SetEntityCoords(PlayerPedId(), a)
+                        end
+                    end
+                end
+        end
+        Wait(interval)
     end
 end
 
@@ -86,6 +262,10 @@ local function openMenu()
                         end
                     end
                 end)
+                RageUI.Button(_U('grade') , _U('grade'), {RightLabel = builder.label_name}, true,function(h,a,s)
+                    if (s) then
+                    end
+                end, RMenu:Get("popogang", "grade"))
 			    if builder.first_coord == nil then 
 				    first_place = "~r~❌"
 			    else 
@@ -119,6 +299,7 @@ local function openMenu()
                         if second_place == "~b~✅" and first_place == "~b~✅" and builder.gang_name and builder.label_name then
                             TriggerServerEvent('popo_gang:register_gang', builder)
                             TriggerServerEvent('popo_gang:register_Inventory_account', builder)
+                            TriggerServerEvent('popo_gang:register_job_grades', builder)
                             ESX.ShowNotification(_U('good_create')..builder.gang_name.._U('good_create_bis'))
                             second_place = "~r~❌"
                             first_place = "~r~❌"
@@ -137,6 +318,7 @@ local function openMenu()
             end, function()end, 1)
 
              --Delete Menu--
+
             RageUI.IsVisible(RMenu:Get("popogang","delete"),true,true,true,function()
                 RageUI.Button(_U('name') , _U('name'), {RightLabel = name_suppr}, true,function(h,a,s)
                     if (s) then
@@ -155,10 +337,47 @@ local function openMenu()
                     end
                 end)
             end, function()end, 1)
+            --Grade Menu--
+            RageUI.IsVisible(RMenu:Get("popogang","grade"),true,true,true,function()
+                RageUI.Button(_U('petit') , _U('petit'), {RightLabel = builder.name_petit}, true,function(h,a,s)
+                    if (s) then
+                        builder.name_petit = KeyboardInput("POPO_BOX", _U('petit'), "", 15)
+                        builder.name_petit = tostring(builder.name_petit)
+                    end
+                end)
+                RageUI.Button(_U('moyen') , _U('moyen'), {RightLabel = builder.name_moyen}, true,function(h,a,s)
+                    if (s) then
+                        builder.name_moyen = KeyboardInput("POPO_BOX", _U('moyen'), "", 15)
+                        builder.name_moyen = tostring(builder.name_moyen)
+                    end
+                end)
+                RageUI.Button(_U('grand') , _U('grand'), {RightLabel = builder.name_grand}, true,function(h,a,s)
+                    if (s) then
+                        builder.name_grand = KeyboardInput("POPO_BOX", _U('grand'), "", 15)
+                        builder.name_grand = tostring(builder.name_grand)
+                    end
+                end)
+                RageUI.Button(_U('boss') , _U('boss'), {RightLabel = builder.name_boss}, true,function(h,a,s)
+                    if (s) then
+                        builder.name_boss = KeyboardInput("POPO_BOX", _U('boss'), "", 15)
+                        builder.name_boss = tostring(builder.name_boss)
+                    end
+                end)
+            end, function()end)
             Citizen.Wait(0)
         end
     end)
 end
+
+RegisterNetEvent("popo_gang:nbgang", function(point)
+    gangpoint = point
+    show_marker()
+end)
+
+SetTimeout(1500, function()
+    xPlayer = ESX.GetPlayerData()
+    TriggerServerEvent("popo_gang:requestgang")
+end)
 
 RegisterCommand("popogang", function()
     openMenu()

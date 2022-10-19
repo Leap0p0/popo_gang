@@ -1,7 +1,17 @@
 Locales['fr'] = {
 
-    ['open'] = "Appuyez sur [~b~E~w~] pour prendre l'ascenseur.",
+    ['open_stock'] = "Appuyez sur [~b~E~w~] pour ouvrir le coffre.",
+    ['open_boss'] = "Appuyez sur [~b~E~w~] pour ouvrir le menu Boss.",
     ['name'] = 'Nom :',
+    ['inventory'] = "Déposer dans le stock",
+    ['get_stock'] = "Prendre dans le stock",
+    ['put_stock'] = "Déposer dans le stock",
+    ['invalid_quantity'] = "~r~Quantité Invalide !",
+    ['grade'] = 'Grade :',
+    ['petit'] = 'Petit :',
+    ['moyen'] = 'Moyen :',
+    ['grand'] = 'Grand :',
+    ['boss'] = 'Boss :',
     ['label'] = 'Label :',
     ['first_point'] = 'Point du coffre :',
 	['second_point'] = 'Point du Boss :',
@@ -18,5 +28,5 @@ Locales['fr'] = {
     ['create_point'] = "Création de point",
     ['delete_point'] = "Suppression de point",
     ['load'] = "Nous avons ",
-    ['load_bis'] = " point(s) de téléportation sur la Map !",
+    ['load_bis'] = " gang(s) sur le serveur !",
 }
