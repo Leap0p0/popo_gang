@@ -10,6 +10,11 @@ local name_grand = nil
 local name_boss = nil
 local first_place = nil
 local second_place = nil
+local name_job = nil
+local boss_pos = nil
+local job = nil
+local job_grade = nil
+local stock_pos = nil
 local builder = {
     first_coord = nil,
     second_coord = nil
@@ -25,6 +30,9 @@ end
 RMenu.Add("popogang", "stock", RageUI.CreateMenu("Souhaitez-vous", "~b~ Prendre / Déposer"))
 RMenu:Get("popogang", "stock").Closed = function()
 end
+RMenu.Add("popogang", "boss", RageUI.CreateMenu("Souhaitez-vous", "Souhaitez-vous : "))
+RMenu:Get("popogang", "boss").Closed = function()
+end
 
 RMenu.Add("popogang", "create", RageUI.CreateSubMenu(RMenu:Get("popogang", "categorie"), "lolo", nil))
 RMenu:Get("popogang", "create").Closed = function()
@@ -37,6 +45,22 @@ end
 RMenu.Add("popogang", "delete", RageUI.CreateSubMenu(RMenu:Get("popogang", "categorie"), "eded", nil))
 RMenu:Get("popogang", "delete").Closed = function()
 end
+
+RegisterNetEvent('esx:playerLoaded')
+AddEventHandler('esx:playerLoaded', function(xPlayer)
+	ESX.PlayerData = xPlayer
+	PlayerLoaded = true
+end)
+
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+	ESX.PlayerData.job = job
+end)
+
+RegisterNetEvent('esx:setJob2')
+AddEventHandler('esx:setJob2', function(job2)
+	ESX.PlayerData.job2 = job2
+end)
 
 local function KeyboardInput(entryTitle, textEntry, inputText, maxLength)
     AddTextEntry(entryTitle, textEntry)
@@ -151,7 +175,6 @@ local function OpenPutStocksMenu(society_name)
 	end)
 end
 
-
 --STOCK MENU RageUI--
 
 local function openStockMenu(society_name)
@@ -177,17 +200,62 @@ local function openStockMenu(society_name)
 	end)
 end
 
+--open the boss menu in RageUI--
+local function openBossMenu()
+	TriggerEvent('esx_society:openBossMenu', ESX.PlayerData.job2.name, function(data, menu)
+		menu.close()
+	end)
+end
+
+local function boss()
+    RageUI.Visible(RMenu:Get("popogang","boss"), true)
+    Citizen.CreateThread(function()
+    while true do
+        RageUI.IsVisible(RMenu:Get("popogang","boss"),true,true,true,function()
+            RageUI.Button("Retirer argent de société" , "Retirer argent de société", {RightLabel = "~g~>>>"}, true,function(h,a,s)
+                if (s) then
+                    local amount = KeyboardInput("Montant", "", 9)
+                    amount = tonumber(amount)
+                    if amount == nil then
+                        ESX.ShowNotification('Montant invalide')
+                    else
+                        TriggerServerEvent('esx_society:withdrawMoney', ESX.PlayerData.job2.name, amount)
+                    end
+                end
+            end)
+            RageUI.Button("Déposer argent de société" , "Déposer argent de société", {RightLabel = "~g~>>>"}, true,function(h,a,s)
+                if (s) then
+                    local amount = KeyboardInput("Montant", "", 9)
+                    amount = tonumber(amount)
+                    if amount == nil then
+                        ESX.ShowNotification('Montant invalide')
+                    else
+                        print(ESX.PlayerData.job2.name)
+                        TriggerServerEvent('esx_society:depositMoney', ESX.PlayerData.job2.name, amount)
+                    end
+                end
+            end)
+            RageUI.Button("Accéder aux actions de Management" , "Accéder aux actions de Management", {RightLabel = "~g~>>>"}, true,function(h,a,s)
+                if (s) then
+                    openBossMenu()
+                end
+            end)
+        end, function()end)
+        Citizen.Wait(0)
+    end
+end)
+end
 
 --Show marker--
 local function show_marker()
     while true do
         local interval = 500
         local pos = GetEntityCoords(PlayerPedId())
+        local job = ESX.PlayerData.job2.name
+        local job_grade = ESX.PlayerData.job2.grade_name
         for i, teleportpoints in pairs(gangpoint) do
             local a = teleportpoints.first_coord
             local b = teleportpoints.second_coord
-            local job = ESX.PlayerData.job2.name
-            local job_grade = ESX.PlayerData.job2.grade_name
             
             --POINT COFFRE--
             local dist = #(pos - a)
@@ -211,9 +279,10 @@ local function show_marker()
                     DrawMarker(25, b.x, b.y, (b.z - 0.98), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 255, 255, 255, false, true, 2, false, false, false, false)
                     if (dist <= 1) then
                         AddTextEntry("tryb", _U('open_boss'))
+
                         DisplayHelpTextThisFrame("tryb", false)
                         if (IsControlJustPressed(0, 51)) then
-                            SetEntityCoords(PlayerPedId(), a)
+                            boss()
                         end
                     end
                 end
