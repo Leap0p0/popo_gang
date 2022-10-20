@@ -2,11 +2,24 @@ ESX = nil
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
---TriggerEvent('esx_society:registerSociety', 'tattoo', 'tattoo', 'society_tattoo', 'society_tattoo', 'society_tattoo', {type = 'private'})
-
 local society_name = nil
 local gangpoint = {}
 local job = nil
+
+local function InitGangs()
+    MySQL.Async.fetchAll('SELECT * FROM gang', {}, function(data)
+        for k,v in pairs(data) do
+            local society = 'society_'..v.name
+            print(society)
+            print(v.name)
+            TriggerEvent('esx_society:registerSociety', v.name, v.label, society, society, society, {type = 'public'})
+        end
+    end)
+end
+
+Citizen.CreateThread(function()
+    InitGangs()
+end)
 
 RegisterNetEvent('popo_gang:register_gang')
 AddEventHandler('popo_gang:register_gang', function(coord)
