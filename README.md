@@ -16,8 +16,7 @@ ESX-compatible.
 
 * [Preview]()
 * [Discord](https://discord.gg/yQcMBUUkNc)
-
-[Discord Banner 3](https://discordapp.com/api/guilds/504410696390541313/widget.png?style=banner3)
+[![Discord](https://img.shields.io/discord/463752820026376202.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/yQcMBUUkNc)
 
 
 ## Configuration
