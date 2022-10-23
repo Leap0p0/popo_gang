@@ -33,6 +33,26 @@ AddEventHandler('popo_gang:register_gang', function(coord)
         ['@label'] = coord.label_name,
         ['@SecondaryJob'] = 1
     })
+    MySQL.Async.execute('INSERT INTO datastore (name, label, shared) VALUES (@name, @label, @shared)', {
+        ['@name'] = coord.gang_name,
+        ['@label'] = coord.label_name,
+        ['@shared'] = 1
+    })
+    
+end)
+
+RegisterNetEvent('popo_gang:delete_gang')
+AddEventHandler('popo_gang:delete_gang', function(name)
+    local _src = source
+    MySQL.Async.execute('DELETE FROM gang WHERE name = @name', {
+        ['@name'] = name
+    })
+    MySQL.Async.execute('DELETE FROM jobs WHERE name = @name', {
+        ['@name'] = name
+    })
+    MySQL.Async.execute('DELETE FROM datastore WHERE name = @name', {
+        ['@name'] = name
+    })
     
 end)
 
