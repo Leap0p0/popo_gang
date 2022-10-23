@@ -61,3 +61,8 @@ Features :
 
 ## Installation
 Add ``ensure popo_gang`` in the **server.cfg** file.
+
+## Crédits
+
+* [alexandresanlim](https://github.com/alexandresanlim) pour les badges
+* [p0p0](https://github.com/Leap0p0) pour le scritp
