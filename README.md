@@ -39,9 +39,13 @@ Features :
 
 ## Requirements
 * [es-extended](https://github.com/Vanheden/es_extended)
+
 **FR :** 
-Vous avez **ABSOLUMENT** besoin du esx_society ci-dessus pour les double-jobs
+
+* Vous avez **ABSOLUMENT** besoin du esx_society ci-dessus pour les double-jobs
+
 **EN :**
+
 * You **ABSOLUTELY** need the above esx_society for double-jobs
 
 ## Download
