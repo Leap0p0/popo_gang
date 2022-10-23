@@ -1,5 +1,7 @@
 # popo_gang
 
+[![Discord](https://img.shields.io/discord/463752820026376202.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/yQcMBUUkNc)
+
 ## FR :
 
 Gang builder pour FiveM en RageUI.
@@ -16,7 +18,6 @@ ESX-compatible.
 
 * [Preview]()
 * [Discord](https://discord.gg/yQcMBUUkNc)
-[![Discord](https://img.shields.io/discord/463752820026376202.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/yQcMBUUkNc)
 
 
 ## Configuration
