@@ -16,8 +16,8 @@ ESX-compatible.
 
 * [Preview]()
 * [Discord](https://discord.gg/yQcMBUUkNc)
-![Discord Banner 2](https://discordapp.com/api/guilds/504410696390541313/widget.png?style=banner2)
-<img src="https://discordapp.com/api/guilds/504410696390541313/widget.png?style=banner3" alt="Discord Banner 3"/>
+
+![Discord Banner 3](https://discordapp.com/api/guilds/[504410696390541313]/widget.png?style=banner3)
 
 
 ## Configuration
