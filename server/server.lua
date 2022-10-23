@@ -53,6 +53,12 @@ AddEventHandler('popo_gang:delete_gang', function(name)
     MySQL.Async.execute('DELETE FROM datastore WHERE name = @name', {
         ['@name'] = name
     })
+    MySQL.Async.execute('DELETE FROM addon_account WHERE name = @name', {
+        ['@name'] = "society_"..name
+    })
+    MySQL.Async.execute('DELETE FROM addon_inventory WHERE name = @name', {
+        ['@name'] = "society_"..name
+    })
     
 end)
 
@@ -101,7 +107,7 @@ RegisterNetEvent('popo_gang:register_Inventory_account')
 AddEventHandler('popo_gang:register_Inventory_account', function(coord)
     local _src = source
     local xPlayer = ESX.GetPlayerFromId(source)
-    society_name = "society_"..xPlayer.job2.name
+    society_name = "society_"..coord.gang_name
     MySQL.Async.execute('INSERT INTO addon_inventory (name, label, shared) VALUES (@name, @label, @shared)', {
         ['@name'] = society_name,
         ['@label'] = coord.label_name,
