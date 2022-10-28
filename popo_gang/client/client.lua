@@ -70,6 +70,8 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
 ESX.PlayerData = xPlayer
 PlayerLoaded = true
+xPlayer = ESX.GetPlayerData()
+  TriggerServerEvent("popo_gang:requestgang")
 end)
 
 RegisterNetEvent('esx:setJob')
@@ -861,11 +863,6 @@ end)
 RegisterNetEvent("popo_gang:nbgang", function(point)
   gangpoint = point
   show_marker()
-end)
-
-SetTimeout(1500, function()
-  xPlayer = ESX.GetPlayerData()
-  TriggerServerEvent("popo_gang:requestgang")
 end)
 
 RegisterCommand("popogang", function()
