@@ -6,6 +6,7 @@
 [![paypal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/p0p0l4t4nch3?country.x=FR&locale.x=fr_FR)
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:popodevfivem@gmail.com)
 [![LUA](https://img.shields.io/badge/Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white)](https://www.lua.org)
+[![linkcheck](https://github.com/Leap0p0/popo_gang/actions/workflows/test_link.yml/badge.svg)](https://github.com/Leap0p0/popo_gang/actions/workflows/test_link.yml)
 
 
 ## FR :
