@@ -24,7 +24,7 @@ ESX-compatible.
 
 ## INFO :
 
-* [Preview]()
+* [Preview](https://youtu.be/p6IAF2pX9HE)
 * [Discord](https://discord.gg/yQcMBUUkNc)
 
 
