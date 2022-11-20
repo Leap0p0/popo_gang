@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: filiph/linkcheck@2.0.23
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
