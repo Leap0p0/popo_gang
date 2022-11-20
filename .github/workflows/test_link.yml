@@ -1,8 +1,9 @@
-name: Check links with linkcheck
+name: linkcheck
 
 on: push
 jobs:
   Check_link:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - uses: filiph/linkcheck@2.0.23
